@@ -1,46 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora</title>
+    <title>Calculadora Emmemax</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Emmemax</h1>
-        
-        <!-- Calculadora -->
         <div class="calculator">
-            <input type="text" id="display" disabled>
-            <div class="keys">
-                <button onclick="operators('7')">7</button>
-                <button onclick="operators('8')">8</button>
-                <button onclick="operators('9')">9</button>
-                <button onclick="cleaner()">C</button>
-                <button onclick="operators('4')">4</button>
-                <button onclick="operators('5')">5</button>
-                <button onclick="operators('6')">6</button>
-                <button onclick="operators('*')">×</button>
-                <button onclick="operators('1')">1</button>
-                <button onclick="operators('2')">2</button>
-                <button onclick="operators('3')">3</button>
-                <button onclick="operators('+')">+</button>
-                <button onclick="operators('0')">0</button>
-                <button onclick="operators('.')">.</button>
-                <button onclick="operators('-')">-</button>
-                <button onclick="operators('/')">÷</button>
-                <button onclick="calculate()">=</button>
+            <h1>Emmemax</h1>
+            <input type="text" id="display" class="calculator-display" value="0" disabled>
+
+            <div class="button-row">
+                <button onclick="addToDisplay('7')">7</button>
+                <button onclick="addToDisplay('8')">8</button>
+                <button onclick="addToDisplay('9')">9</button>
+            </div>
+            <div class="button-row">
+                <button onclick="addToDisplay('4')">4</button>
+                <button onclick="addToDisplay('5')">5</button>
+                <button onclick="addToDisplay('6')">6</button>
+            </div>
+            <div class="button-row">
+                <button onclick="addToDisplay('1')">1</button>
+                <button onclick="addToDisplay('2')">2</button>
+                <button onclick="addToDisplay('3')">3</button>
+            </div>
+            <div class="button-row">
+                <button onclick="addToDisplay('0')">0</button>
+                <button onclick="addToDisplay('.')">.</button>
+                <button onclick="deleteLast()">←</button> 
+            </div>
+            <div class="button-row">
+                <button onclick="addToDisplay('+')">+</button> 
+                <button onclick="addToDisplay('-')">-</button> 
+                <button onclick="addToDisplay('*')">*</button>
+            </div>
+            <div class="button-row">
+                <button onclick="addToDisplay('/')">/</button> 
+                <button onclick="calculateResult()">=</button> 
+                <button onclick="clearDisplay()">C</button> 
             </div>
         </div>
 
-        <!-- Área de Ejercicios, ahora fuera de la calculadora -->
-        <div class="exercise-area" id="exercise-area">
-            <h2>Ejercicio</h2>
-            <div id="current-exercise"></div>
-            <button id="next-exercise" onclick="showNextExercise()">Siguiente Ejercicio</button>
+        <div id="exercise-section" class="exercise-section">
+            <p id="exercise-text">Ejercicio:</p>
+            <input type="text" id="answer" placeholder="Tu respuesta">
+            <br><br>
+            <button id="checkAnswer" onclick="checkAnswer()">Comprobar Respuesta</button>
+
+            <div id="congratulations-section" class="section" style="display:none;">
+                <h2>¡Muy bien hecho!</h2>
+                <button id="nextExercise" onclick="nextExercise()">Siguiente Ejercicio</button>
+            </div>
+
+            <div id="tryAgain-section" class="section" style="display:none;">
+                <h2>¡Inténtalo de nuevo!</h2>
+                <button id="tryAgain" onclick="retry()">Intentar de nuevo</button>
+            </div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
