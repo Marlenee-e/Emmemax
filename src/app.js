@@ -1,7 +1,7 @@
 class SingletonScreen {
     constructor() {
-        if (SingletonScreen.instance == null) {
-            this.content = '';
+        if (!SingletonScreen.instance) {
+            this.content = ''; 
             SingletonScreen.instance = this;
         }
         return SingletonScreen.instance;
@@ -27,21 +27,29 @@ class SingletonScreen {
     }
 }
 
-const screen = SingletonScreen.getInstance();
+
+const screen = SingletonScreen.getInstance(); 
+
 const exercises = [
-    "1. 5 + 3 = ?",
-    "2. 12 - 4 = ?",
-    "3. 6 * 7 = ?",
-    "4. 20 / 5 = ?",
-    "5. 15 + 25 - 10 = ?",
-    "6. (3 + 7) * 2 = ?",
-    "7. 18 / 3 + 4 = ?",
-    "8. 9 - (2 * 3) = ?",
-    "9. 5 * (4 + 1) = ?",
-    "10. 8 + 2 * 3 = ?"
+    { question: "5 + 3", answer: 8 },
+    { question: "12 - 4", answer: 8 },
+    { question: "6 * 7", answer: 42 },
+    { question: "20 / 5", answer: 4 },
+    { question: "15 + 25 - 10", answer: 30 },
+    { question: "(3 + 7) * 2", answer: 20 },
+    { question: "18 / 3 + 4", answer: 10 },
+    { question: "9 - (2 * 3)", answer: 3 },
+    { question: "5 * (4 + 1)", answer: 25 },
+    { question: "8 + 2 * 3", answer: 14 },
+    { question: "10 - 2 + 5", answer: 13 },
+    { question: "3 * 3 * 3", answer: 27 },
+    { question: "50 / 5 + 10", answer: 20 },
+    { question: "7 + 5 * 2", answer: 17 },
+    { question: "15 / 3 - 1", answer: 4 }
 ];
 
 let currentExerciseIndex = 0;
+
 
 window.onload = () => {
     showNextExercise();
@@ -49,48 +57,32 @@ window.onload = () => {
 
 function showNextExercise() {
     if (currentExerciseIndex < exercises.length) {
-        const exerciseElement = document.getElementById('current-exercise');
-        exerciseElement.textContent = exercises[currentExerciseIndex];
-        currentExerciseIndex++;
+        const exerciseElement = document.getElementById('exercise-text');
+        exerciseElement.textContent = "Ejercicio: " + exercises[currentExerciseIndex].question;
+        document.getElementById('answer').value = ''; 
+        document.getElementById('congratulations-section').style.display = 'none'; 
+        document.getElementById('tryAgain-section').style.display = 'none'; 
     } else {
-        alert("¡Todos los ejercicios han sido mostrados!");
-        currentExerciseIndex = 0;
+        alert("¡Todos los ejercicios han sido completados!");
     }
 }
 
-class OperationFactory {
-    static createOperation(operator) {
-        return (a, b) => {
-            switch (operator) {
-                case '+':
-                    return a + b;
-                case '-':
-                    return a - b;
-                case '*':
-                    return a * b;
-                case '/':
-                    return a / b;
-                default:
-                    throw new Error("Operación no soportada");
-            }
-        };
-    }
+
+function addToDisplay(value) {
+    screen.setContent(screen.getContent() + value); 
+    updateScreen(); 
 }
 
-function operators(value) {
-    screen.setContent(screen.getContent() + value);
-    updateScreen();
+function clearDisplay() {
+    screen.clear(); 
+    updateScreen(); 
 }
 
-function cleaner() {
-    screen.clear();
-    updateScreen();
-}
-
-function calculate() {
+function calculateResult() {
     try {
-        const result = eval(screen.getContent());
-        screen.setContent(result.toString());
+        let expression = screen.getContent();
+        let result = eval(expression); 
+        screen.setContent(result.toString()); 
         updateScreen();
     } catch (error) {
         screen.setContent('Syntax error');
@@ -98,20 +90,38 @@ function calculate() {
     }
 }
 
+function deleteLast() {
+    const currentContent = screen.getContent();
+    screen.setContent(currentContent.slice(0, -1)); 
+    updateScreen();
+}
+
+
 function updateScreen() {
     document.getElementById('display').value = screen.getContent();
 }
 
-function sortNumbers() {
-    const numbers = screen.getContent().split(',').map(parseFloat);
-    const sortedNumbers = numbers.sort((a, b) => a - b);
-    screen.setContent(sortedNumbers.join(','));
-    updateScreen();
+
+function checkAnswer() {
+    const userAnswer = parseFloat(document.getElementById('answer').value);
+    const correctAnswer = exercises[currentExerciseIndex].answer;
+
+    if (userAnswer === correctAnswer) {
+        document.getElementById('congratulations-section').style.display = 'block'; 
+        document.getElementById('tryAgain-section').style.display = 'none'; 
+    } else {
+        document.getElementById('tryAgain-section').style.display = 'block'; 
+        document.getElementById('congratulations-section').style.display = 'none'; 
+    }
 }
 
-function findMax() {
-    const numbers = screen.getContent().split(',').map(parseFloat);
-    const maxNumber = Math.max(...numbers);
-    screen.setContent(maxNumber.toString());
-    updateScreen();
+
+function nextExercise() {
+    currentExerciseIndex++;
+    showNextExercise(); 
+}
+
+
+function retry() {
+    showNextExercise(); 
 }
